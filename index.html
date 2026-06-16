@@ -899,12 +899,163 @@ footer .copyright {
 
   .portfolio-visual { height: 200px; }
 }
+
+/* ===== EDIT MODE ===== */
+.edit-toolbar {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 10002;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.edit-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  position: relative;
+}
+
+.edit-btn:hover {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+.edit-btn:hover svg line,
+.edit-btn:hover svg path { stroke: var(--paper); }
+
+.edit-btn svg { width: 18px; height: 18px; }
+
+.edit-btn svg line,
+.edit-btn svg path { stroke: var(--ink); transition: stroke 0.3s; }
+
+.edit-save-btn,
+.edit-cancel-btn,
+.edit-export-btn {
+  display: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  border: 1px solid var(--border);
+  font-size: 0.6rem;
+  font-family: var(--font-sans);
+  letter-spacing: 0.05em;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.edit-export-btn { background: var(--ink); color: var(--paper); border-color: var(--ink); display: none; }
+.edit-save-btn { background: var(--ink); color: var(--paper); border-color: var(--ink); display: none; }
+.edit-cancel-btn { display: none; }
+
+body.editing .edit-save-btn { display: flex; }
+body.editing .edit-cancel-btn { display: flex; }
+body.editing .edit-export-btn { display: flex; }
+
+/* Editable highlight */
+body.editing [data-editable] {
+  outline: 1px dashed rgba(184,148,75,0.3);
+  outline-offset: 2px;
+  cursor: text;
+  transition: outline-color 0.25s ease;
+  border-radius: 2px;
+  padding: 2px 4px;
+  margin: -2px -4px;
+}
+
+body.editing [data-editable]:hover {
+  outline-color: rgba(184,148,75,0.7);
+  background: rgba(184,148,75,0.04);
+}
+
+body.editing [data-editable]:focus {
+  outline: 2px solid var(--accent-gold);
+  background: rgba(184,148,75,0.06);
+  outline-offset: 3px;
+}
+
+/* Hide decorations during edit */
+body.editing .cursor-decoration { display: none; }
+
+body.editing .edit-tooltip {
+  display: block;
+}
+
+.edit-tooltip {
+  display: none;
+  font-family: var(--font-sans);
+  font-size: 0.6rem;
+  color: var(--tan);
+  letter-spacing: 0.1em;
+  text-align: right;
+  padding: 0 4px;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.edit-toast {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ink);
+  color: var(--paper);
+  padding: 10px 24px;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  z-index: 10003;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  border-radius: 2px;
+}
+
+.edit-toast.show { opacity: 1; }
+@media (max-width: 768px) {
+  .edit-toolbar { bottom: 16px; right: 16px; }
+  .edit-btn { width: 38px; height: 38px; }
+  .edit-save-btn, .edit-cancel-btn, .edit-export-btn { width: 38px; height: 38px; font-size: 0.55rem; }
+}
 </style>
 </head>
 <body>
 
 <!-- Decorative cursor -->
 <div class="cursor-decoration" id="cursorDeco"></div>
+
+<!-- Edit Toolbar -->
+<div class="edit-toolbar" id="editToolbar">
+  <div class="edit-tooltip" id="editTooltip">点击铅笔开始编辑</div>
+  <button class="edit-btn" id="editToggleBtn" title="编辑模式" aria-label="编辑模式">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+  <button class="edit-save-btn" id="editSaveBtn" title="保存修改" aria-label="保存">保存</button>
+  <button class="edit-export-btn" id="editExportBtn" title="下载HTML" aria-label="下载">下载</button>
+  <button class="edit-cancel-btn" id="editCancelBtn" title="退出编辑" aria-label="退出">退出</button>
+</div>
+
+<!-- Toast -->
+<div class="edit-toast" id="editToast"></div>
 
 <!-- Navigation -->
 <nav id="navbar">
@@ -1467,6 +1618,178 @@ setTimeout(() => {
     }
   });
 }, 100);
+
+// ===== EDIT MODE =====
+const editToggleBtn = document.getElementById('editToggleBtn');
+const editSaveBtn = document.getElementById('editSaveBtn');
+const editExportBtn = document.getElementById('editExportBtn');
+const editCancelBtn = document.getElementById('editCancelBtn');
+const editToast = document.getElementById('editToast');
+const editTooltip = document.getElementById('editTooltip');
+
+const EDITABLE_SELECTORS = [
+  '.hero-tag', '.hero-subtitle', '.hero-corner', '.scroll-text', '.nav-brand',
+  '.section-number', '.section-title', '.section-subtitle',
+  '.about-text p', '.about-text strong', '.pull-quote',
+  '.about-sidebar h4', '.about-sidebar p', '.about-sidebar strong',
+  '.skill-tag',
+  '.portfolio-category', '.portfolio-title', '.portfolio-desc',
+  '.showcase-title-group h3', '.showcase-meta',
+  '.stat-number', '.stat-label',
+  '.showcase-card h4', '.showcase-card p',
+  '.gallery-label',
+  '.contact-info li', '.contact-label',
+  '.timeline-date', '.timeline-title', '.timeline-subtitle', '.timeline-desc',
+  'footer .brand', 'footer .tagline', 'footer .copyright',
+  'footer .social-links a'
+];
+
+let isEditing = false;
+let originalHTML = '';
+
+function showToast(msg) {
+  editToast.textContent = msg;
+  editToast.classList.add('show');
+  setTimeout(() => editToast.classList.remove('show'), 2000);
+}
+
+function enterEditMode() {
+  if (isEditing) return;
+  isEditing = true;
+  originalHTML = document.documentElement.outerHTML;
+  document.body.classList.add('editing');
+
+  let count = 0;
+  EDITABLE_SELECTORS.forEach(sel => {
+    document.querySelectorAll(sel).forEach(el => {
+      if (!el.hasAttribute('contenteditable')) {
+        el.setAttribute('contenteditable', 'true');
+        el.setAttribute('data-editable', '');
+        count++;
+      }
+    });
+  });
+
+  // Also handle elements with inline text (like h1 span)
+  document.querySelectorAll('.hero h1 span').forEach(el => {
+    if (!el.hasAttribute('contenteditable')) {
+      el.setAttribute('contenteditable', 'true');
+      el.setAttribute('data-editable', '');
+      count++;
+    }
+  });
+
+  editTooltip.style.display = 'none';
+  showToast('编辑模式已开启 · 点击任意文字即可修改 · ' + count + ' 处可编辑');
+}
+
+function exitEditMode(save) {
+  if (!isEditing) return;
+  isEditing = false;
+  document.body.classList.remove('editing');
+
+  document.querySelectorAll('[contenteditable="true"]').forEach(el => {
+    el.removeAttribute('contenteditable');
+    el.removeAttribute('data-editable');
+    // Keep changed content
+  });
+
+  editTooltip.style.display = 'block';
+  if (save) {
+    showToast('修改已保存（页面状态）· 点击"下载"导出HTML');
+  } else {
+    showToast('已退出编辑模式');
+  }
+}
+
+function downloadHTML() {
+  // Remove edit mode artifacts before download
+  const wasEditing = isEditing;
+  if (isEditing) {
+    document.body.classList.remove('editing');
+  }
+
+  // Remove contenteditable attributes
+  document.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
+  document.querySelectorAll('[data-editable]').forEach(el => el.removeAttribute('data-editable'));
+  document.querySelector('#editToolbar').style.display = 'none';
+  document.querySelector('#editToast').style.display = 'none';
+
+  let html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+
+  // Restore
+  document.querySelector('#editToolbar').style.display = '';
+  document.querySelector('#editToast').style.display = '';
+  if (wasEditing) {
+    document.body.classList.add('editing');
+    enterEditModeSilent();
+  }
+
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'index.html';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('HTML 文件已下载 ✓');
+}
+
+function enterEditModeSilent() {
+  EDITABLE_SELECTORS.forEach(sel => {
+    document.querySelectorAll(sel).forEach(el => {
+      el.setAttribute('contenteditable', 'true');
+      el.setAttribute('data-editable', '');
+    });
+  });
+  document.querySelectorAll('.hero h1 span').forEach(el => {
+    el.setAttribute('contenteditable', 'true');
+    el.setAttribute('data-editable', '');
+  });
+}
+
+editToggleBtn.addEventListener('click', enterEditMode);
+editCancelBtn.addEventListener('click', () => exitEditMode(false));
+editSaveBtn.addEventListener('click', () => exitEditMode(true));
+editExportBtn.addEventListener('click', downloadHTML);
+
+// Keyboard shortcut: Ctrl+E to toggle edit
+document.addEventListener('keydown', (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'e') {
+    e.preventDefault();
+    if (isEditing) {
+      exitEditMode(true);
+    } else {
+      enterEditMode();
+    }
+  }
+  // Escape to cancel
+  if (e.key === 'Escape' && isEditing) {
+    exitEditMode(false);
+  }
+});
+
+// Highlight editable on hover in non-edit mode (subtle)
+document.addEventListener('mouseover', (e) => {
+  if (!isEditing) return;
+  const editable = e.target.closest('[contenteditable="true"]');
+  if (editable) {
+    editable.style.outline = '1px dashed rgba(184,148,75,0.5)';
+  }
+});
+
+document.addEventListener('mouseout', (e) => {
+  if (!isEditing) return;
+  const editable = e.target.closest('[contenteditable="true"]');
+  if (editable && !editable.matches(':focus')) {
+    editable.style.outline = '';
+  }
+});
+
+// Show tooltip animation
+setTimeout(() => { editTooltip.style.display = 'block'; }, 2000);
 </script>
 </body>
 </html>
