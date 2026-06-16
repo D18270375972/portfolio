@@ -1,0 +1,1472 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>丁紫悦 · 作品集</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Noto+Serif+SC:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #f7f4ed;
+  --paper-dark: #ede7da;
+  --ink: #1a1a1a;
+  --ink-soft: #3a3a3a;
+  --accent-gold: #b8944b;
+  --accent-warm: #c47a4a;
+  --accent-red: #a83c3c;
+  --accent-teal: #5a7d7c;
+  --tan: #c4a882;
+  --cream: #faf7f0;
+  --border: #d4cdba;
+  --font-serif: 'Playfair Display', 'Noto Serif SC', 'EB Garamond', Georgia, serif;
+  --font-cn: 'Noto Serif SC', serif;
+  --font-sans: 'Noto Sans SC', 'Helvetica Neue', sans-serif;
+  --font-display: 'Playfair Display', 'Noto Serif SC', serif;
+  --font-body: 'EB Garamond', 'Noto Serif SC', Georgia, serif;
+  --max-width: 1280px;
+  --col-gap: clamp(16px, 3vw, 40px);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  font-size: clamp(15px, 1.6vw, 18px);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--paper);
+  line-height: 1.7;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Paper texture overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(139,119,90,0.012) 2px, rgba(139,119,90,0.012) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(139,119,90,0.015) 2px, rgba(139,119,90,0.015) 4px),
+    radial-gradient(ellipse at 20% 80%, rgba(180,160,130,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse at 75% 15%, rgba(180,160,130,0.06) 0%, transparent 55%);
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--paper-dark); }
+::-webkit-scrollbar-thumb { background: var(--tan); border-radius: 0; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent-gold); }
+
+/* Selection */
+::selection { background: rgba(184,148,75,0.25); color: var(--ink); }
+
+/* Navigation */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9998;
+  padding: 14px clamp(16px, 4vw, 48px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(180deg, rgba(247,244,237,0.97) 60%, rgba(247,244,237,0) 100%);
+  backdrop-filter: blur(8px);
+  transition: all 0.4s ease;
+}
+
+nav.scrolled {
+  background: rgba(247,244,237,0.97);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 1px 0 var(--border);
+}
+
+.nav-brand {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  gap: clamp(20px, 3vw, 40px);
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  text-decoration: none;
+  position: relative;
+  padding: 4px 0;
+  transition: color 0.3s;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--ink);
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover { color: var(--ink); }
+.nav-links a:hover::after { width: 100%; }
+
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.menu-toggle span {
+  display: block;
+  width: 22px;
+  height: 1.5px;
+  background: var(--ink);
+  transition: all 0.3s ease;
+}
+
+/* Mobile menu */
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 100%;
+  height: 100vh;
+  background: var(--paper);
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  transition: right 0.5s cubic-bezier(0.4,0,0.2,1);
+}
+
+.mobile-menu.active { right: 0; }
+
+.mobile-menu a {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  color: var(--ink);
+  text-decoration: none;
+  letter-spacing: 0.08em;
+}
+
+.mobile-close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--ink);
+}
+
+/* Hero Section */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: clamp(60px, 10vh, 120px) clamp(16px, 6vw, 80px);
+  position: relative;
+}
+
+.hero-content {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-tag {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent-warm);
+  margin-bottom: 24px;
+  display: block;
+}
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 8vw, 8rem);
+  font-weight: 700;
+  line-height: 1.05;
+  margin-bottom: 8px;
+  position: relative;
+}
+
+.hero h1 .decorative {
+  display: inline-block;
+  position: relative;
+}
+
+.hero h1 .decorative::before {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--accent-gold);
+}
+
+.hero-subtitle {
+  font-family: var(--font-body);
+  font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+  color: var(--ink-soft);
+  font-style: italic;
+  margin-top: 24px;
+  max-width: 600px;
+  line-height: 1.6;
+}
+
+.hero-corner {
+  position: absolute;
+  bottom: clamp(20px, 5vh, 60px);
+  right: clamp(16px, 6vw, 80px);
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: var(--tan);
+  writing-mode: vertical-rl;
+  z-index: 1;
+}
+
+.hero-decoration {
+  position: absolute;
+  top: 50%;
+  left: -60px;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 40vh;
+  background: linear-gradient(180deg, transparent, var(--border), transparent);
+}
+
+/* Scroll indicator */
+.scroll-indicator {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  z-index: 1;
+}
+
+.scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(180deg, var(--accent-gold), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+.scroll-text {
+  font-family: var(--font-sans);
+  font-size: 0.55rem;
+  letter-spacing: 0.25em;
+  color: var(--tan);
+  text-transform: uppercase;
+}
+
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+/* Section base */
+section {
+  padding: clamp(60px, 10vh, 120px) clamp(16px, 6vw, 80px);
+  position: relative;
+}
+
+.section-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.section-header {
+  margin-bottom: clamp(40px, 8vh, 80px);
+  position: relative;
+}
+
+.section-number {
+  font-family: var(--font-serif);
+  font-size: 0.85rem;
+  color: var(--accent-gold);
+  letter-spacing: 0.15em;
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4.5vw, 3.5rem);
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+
+.section-subtitle {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--tan);
+}
+
+.section-line {
+  width: 60px;
+  height: 1px;
+  background: var(--accent-gold);
+  margin-top: 24px;
+}
+
+/* About Section */
+#about {
+  background: linear-gradient(180deg, var(--paper) 0%, var(--cream) 50%, var(--paper) 100%);
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--col-gap);
+  align-items: start;
+}
+
+.about-text {
+  font-family: var(--font-cn);
+  font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+  line-height: 2;
+  color: var(--ink-soft);
+}
+
+.about-text strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.pull-quote {
+  font-family: var(--font-serif);
+  font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+  font-style: italic;
+  color: var(--accent-warm);
+  line-height: 1.5;
+  padding: 24px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  margin: 32px 0;
+}
+
+.about-sidebar {
+  padding: clamp(20px, 4vw, 40px);
+  border: 1px solid var(--border);
+  background: rgba(247,244,237,0.5);
+}
+
+.about-sidebar h4 {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--tan);
+  margin-bottom: 20px;
+}
+
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+
+.skill-tag {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  color: var(--ink-soft);
+  background: transparent;
+  transition: all 0.3s ease;
+}
+
+.skill-tag:hover {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+/* Portfolio Grid */
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(20px, 4vw, 48px);
+}
+
+.portfolio-item {
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--cream);
+  transition: all 0.4s ease;
+}
+
+.portfolio-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.06);
+}
+
+.portfolio-visual {
+  height: 320px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--paper-dark);
+}
+
+.portfolio-visual svg {
+  width: 80%;
+  height: 80%;
+}
+
+.portfolio-info {
+  padding: clamp(16px, 3vw, 32px);
+}
+
+.portfolio-category {
+  font-family: var(--font-sans);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent-warm);
+  margin-bottom: 8px;
+}
+
+.portfolio-title {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.portfolio-desc {
+  font-family: var(--font-cn);
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  line-height: 1.7;
+}
+
+/* Interactive Section visual */
+#interactive .portfolio-visual {
+  background: linear-gradient(135deg, #f5f0e8 0%, #ede4d3 50%, #e8dfcd 100%);
+}
+
+/* Space Section visual */
+#space .portfolio-visual {
+  background: linear-gradient(135deg, #f0ece5 0%, #e6e0d6 50%, #dcd5c8 100%);
+}
+
+/* Graphic Section visual */
+#graphic .portfolio-visual {
+  background: linear-gradient(135deg, #f7f3ec 0%, #efe8db 50%, #e5dcca 100%);
+}
+
+/* Editorial layout for work showcases */
+.showcase {
+  margin-top: clamp(40px, 6vh, 80px);
+  padding: clamp(24px, 4vw, 48px);
+  border: 1px solid var(--border);
+  position: relative;
+}
+
+.showcase::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 40px;
+  right: 40px;
+  height: 1px;
+  background: var(--accent-gold);
+}
+
+.showcase-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: clamp(24px, 4vw, 48px);
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.showcase-title-group h3 {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  font-weight: 600;
+}
+
+.showcase-meta {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  color: var(--tan);
+  margin-top: 8px;
+}
+
+.showcase-stats {
+  display: flex;
+  gap: 32px;
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat-number {
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+  display: block;
+}
+
+.stat-label {
+  font-family: var(--font-sans);
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  color: var(--tan);
+  margin-top: 4px;
+  display: block;
+}
+
+.showcase-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--col-gap);
+}
+
+.showcase-card {
+  padding: clamp(16px, 3vw, 24px);
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.showcase-card:hover {
+  border-color: var(--border);
+  background: rgba(247,244,237,0.6);
+}
+
+.showcase-card-icon {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+}
+
+.showcase-card h4 {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.showcase-card p {
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  line-height: 1.7;
+  font-family: var(--font-cn);
+}
+
+/* Gallery grid */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--col-gap);
+  margin-top: clamp(24px, 3vw, 40px);
+}
+
+.gallery-item {
+  position: relative;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  background: var(--cream);
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s ease;
+  cursor: pointer;
+}
+
+.gallery-item:hover {
+  transform: scale(1.02);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.06);
+  z-index: 2;
+}
+
+.gallery-item.large { grid-column: span 7; }
+.gallery-item.medium { grid-column: span 5; }
+.gallery-item.small { grid-column: span 4; }
+.gallery-item.xsmall { grid-column: span 3; }
+
+.gallery-label {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  font-family: var(--font-sans);
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  color: var(--tan);
+  background: rgba(247,244,237,0.9);
+  padding: 4px 10px;
+  z-index: 2;
+}
+
+.gallery-svg {
+  width: 85%;
+  height: 85%;
+  opacity: 0.85;
+}
+
+/* Resume Section */
+#resume {
+  background: linear-gradient(180deg, var(--cream) 0%, var(--paper) 50%, var(--cream) 100%);
+}
+
+.resume-layout {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: var(--col-gap);
+}
+
+.resume-sidebar {
+  padding: clamp(20px, 4vw, 40px);
+  border: 1px solid var(--border);
+  position: sticky;
+  top: 100px;
+  align-self: start;
+}
+
+.contact-info {
+  list-style: none;
+}
+
+.contact-info li {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-cn);
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.contact-info li:last-child { border-bottom: none; }
+
+.contact-label {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  color: var(--tan);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.timeline {
+  position: relative;
+  padding-left: 24px;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--border);
+}
+
+.timeline-item {
+  position: relative;
+  padding-bottom: clamp(32px, 5vh, 56px);
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -28px;
+  top: 6px;
+  width: 9px;
+  height: 9px;
+  border: 1px solid var(--accent-gold);
+  border-radius: 50%;
+  background: var(--paper);
+}
+
+.timeline-date {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  color: var(--tan);
+  margin-bottom: 8px;
+}
+
+.timeline-title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.timeline-subtitle {
+  font-family: var(--font-cn);
+  font-size: 0.9rem;
+  color: var(--accent-warm);
+  margin-bottom: 12px;
+}
+
+.timeline-desc {
+  font-family: var(--font-cn);
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  line-height: 1.8;
+}
+
+/* Footer */
+footer {
+  padding: clamp(40px, 6vh, 80px) clamp(16px, 6vw, 80px);
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+footer .brand {
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+footer .tagline {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: var(--tan);
+  margin-bottom: 32px;
+}
+
+footer .social-links {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  list-style: none;
+  margin-bottom: 32px;
+}
+
+footer .social-links a {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: var(--ink-soft);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+footer .social-links a:hover { color: var(--accent-gold); }
+
+footer .copyright {
+  font-family: var(--font-sans);
+  font-size: 0.6rem;
+  color: var(--tan);
+  letter-spacing: 0.1em;
+}
+
+/* Scroll reveal animations */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Custom cursor-like decoration */
+.cursor-decoration {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--accent-gold);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10001;
+  transition: transform 0.1s ease;
+  opacity: 0.6;
+  mix-blend-mode: difference;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .menu-toggle { display: flex; }
+
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .portfolio-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .portfolio-visual {
+    height: 240px;
+  }
+
+  .resume-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .resume-sidebar {
+    position: static;
+    margin-bottom: 32px;
+  }
+
+  .gallery-item.large,
+  .gallery-item.medium,
+  .gallery-item.small,
+  .gallery-item.xsmall { grid-column: span 6; }
+
+  .showcase-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .showcase-stats {
+    width: 100%;
+    justify-content: space-around;
+  }
+
+  .showcase-header {
+    flex-direction: column;
+  }
+
+  .cursor-decoration { display: none; }
+
+  .hero-decoration { display: none; }
+}
+
+@media (max-width: 480px) {
+  .gallery-item.large,
+  .gallery-item.medium,
+  .gallery-item.small,
+  .gallery-item.xsmall { grid-column: span 12; min-height: 160px; }
+
+  .portfolio-visual { height: 200px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Decorative cursor -->
+<div class="cursor-decoration" id="cursorDeco"></div>
+
+<!-- Navigation -->
+<nav id="navbar">
+  <a href="#" class="nav-brand">Ziyue</a>
+  <ul class="nav-links">
+    <li><a href="#about">关于</a></li>
+    <li><a href="#interactive">交互</a></li>
+    <li><a href="#space">空间</a></li>
+    <li><a href="#graphic">平面</a></li>
+    <li><a href="#resume">履历</a></li>
+  </ul>
+  <button class="menu-toggle" id="menuToggle" aria-label="菜单">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" id="mobileClose">&times;</button>
+  <a href="#about" class="mobile-link">关于</a>
+  <a href="#interactive" class="mobile-link">交互设计</a>
+  <a href="#space" class="mobile-link">空间设计</a>
+  <a href="#graphic" class="mobile-link">平面设计</a>
+  <a href="#resume" class="mobile-link">履历</a>
+</div>
+
+<!-- Hero -->
+<section class="hero reveal">
+  <div class="hero-decoration"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Portfolio · 2026</div>
+    <h1>
+      <span class="decorative">丁紫悦</span>
+    </h1>
+    <p class="hero-subtitle">
+      交互与视觉设计师 — 在纸张的质感中寻找数字时代的温度，用设计连接人与空间、形态与情感。
+    </p>
+  </div>
+  <div class="hero-corner">ZI · YUE · DING</div>
+
+  <div class="scroll-indicator">
+    <div class="scroll-line"></div>
+    <span class="scroll-text">Scroll</span>
+  </div>
+</section>
+
+<!-- About -->
+<section id="about">
+  <div class="section-container">
+    <div class="section-header reveal">
+      <div class="section-number">01</div>
+      <h2 class="section-title">关于我<br>About Me</h2>
+      <div class="section-subtitle">设计师 · 创造者 · 叙事者</div>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p>我是一名<strong>交互与视觉设计师</strong>，现居杭州。我的创作横跨数字产品设计、空间体验营造与平面视觉传达。我相信<strong>设计是一种叙事</strong>——每一个像素、每一寸空间、每一道线条，都在讲述一个故事。</p>
+        <div class="pull-quote">
+          「纸张是我永恒的灵感来源——它承载着历史，也孕育着未来。我擅长将东方美学与现代设计语言相融合，用极简的形式传递丰富的情感。」
+        </div>
+        <p>设计于我而言，不仅是解决问题的手段，更是<strong>感知世界的方式</strong>。我着迷于材质、光影与留白之间的关系，在每一次创作中探寻秩序与自由的边界。</p>
+      </div>
+
+      <div class="about-sidebar reveal">
+        <h4>核心能力</h4>
+        <div class="skill-tags">
+          <span class="skill-tag">UX 研究</span>
+          <span class="skill-tag">UI 设计</span>
+          <span class="skill-tag">用户访谈</span>
+          <span class="skill-tag">Figma</span>
+          <span class="skill-tag">Sketch</span>
+          <span class="skill-tag">Adobe CC</span>
+          <span class="skill-tag">3D 建模</span>
+          <span class="skill-tag">空间规划</span>
+          <span class="skill-tag">插画</span>
+          <span class="skill-tag">品牌设计</span>
+          <span class="skill-tag">原型开发</span>
+          <span class="skill-tag">设计系统</span>
+        </div>
+
+        <h4>教育背景</h4>
+        <p style="font-family:var(--font-cn); font-size:0.85rem; color:var(--ink-soft); line-height:1.8; margin-top:8px;">
+          <strong>中国美术学院</strong><br>
+          设计学 硕士<br>
+          <span style="font-size:0.7rem;color:var(--tan)">2021 — 2024</span>
+        </p>
+        <p style="font-family:var(--font-cn); font-size:0.85rem; color:var(--ink-soft); line-height:1.8; margin-top:12px;">
+          <strong>江南大学</strong><br>
+          工业设计 学士<br>
+          <span style="font-size:0.7rem;color:var(--tan)">2017 — 2021</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Interactive Design -->
+<section id="interactive">
+  <div class="section-container">
+    <div class="section-header reveal">
+      <div class="section-number">02</div>
+      <h2 class="section-title">交互设计<br>Interaction Design</h2>
+      <div class="section-subtitle">数字产品 · 体验创新 · 设计系统</div>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="portfolio-grid">
+      <div class="portfolio-item reveal">
+        <div class="portfolio-visual">
+          <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#3a3a3a;stop-opacity:0.08"/>
+                <stop offset="100%" style="stop-color:#b8944b;stop-opacity:0.15"/>
+              </linearGradient>
+            </defs>
+            <rect x="60" y="60" width="280" height="280" rx="16" fill="#faf7f0" stroke="#c4a882" stroke-width="1.5"/>
+            <rect x="90" y="100" width="220" height="16" rx="3" fill="#3a3a3a" opacity="0.15"/>
+            <rect x="90" y="130" width="160" height="10" rx="3" fill="#c4a882" opacity="0.4"/>
+            <circle cx="320" cy="135" r="18" fill="none" stroke="#b8944b" stroke-width="1.5"/>
+            <rect x="90" y="170" width="220" height="40" rx="6" fill="none" stroke="#c4a882" stroke-width="1"/>
+            <rect x="90" y="230" width="100" height="28" rx="14" fill="#b8944b" opacity="0.2"/>
+            <rect x="200" y="230" width="100" height="28" rx="14" fill="#c4a882" opacity="0.3"/>
+            <line x1="140" y1="280" x2="260" y2="280" stroke="#c4a882" stroke-width="0.5"/>
+            <rect x="120" y="300" width="160" height="6" rx="3" fill="#c4a882" opacity="0.3"/>
+            <circle cx="340" cy="320" r="4" fill="#b8944b" opacity="0.6"/>
+            <circle cx="355" cy="320" r="4" fill="#c4a882" opacity="0.4"/>
+            <circle cx="370" cy="320" r="4" fill="#c4a882" opacity="0.3"/>
+          </svg>
+        </div>
+        <div class="portfolio-info">
+          <div class="portfolio-category">UI / UX</div>
+          <h3 class="portfolio-title">「栖云」智能家居 App</h3>
+          <p class="portfolio-desc">以"温润"为核心体验的智能家居控制应用。极简界面融合东方美学，让科技回归生活本真。</p>
+        </div>
+      </div>
+
+      <div class="portfolio-item reveal">
+        <div class="portfolio-visual">
+          <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#5a7d7c;stop-opacity:0.06"/>
+                <stop offset="100%" style="stop-color:#c4a882;stop-opacity:0.12"/>
+              </linearGradient>
+            </defs>
+            <rect x="60" y="60" width="280" height="280" rx="8" fill="#faf7f0" stroke="#c4a882" stroke-width="1"/>
+            <circle cx="200" cy="170" r="70" fill="none" stroke="#5a7d7c" stroke-width="1.5" opacity="0.3"/>
+            <circle cx="200" cy="170" r="50" fill="none" stroke="#b8944b" stroke-width="1.5" opacity="0.4"/>
+            <circle cx="200" cy="170" r="30" fill="none" stroke="#3a3a3a" stroke-width="1.5" opacity="0.2"/>
+            <circle cx="200" cy="170" r="4" fill="#b8944b"/>
+            <text x="200" y="280" text-anchor="middle" font-family="serif" font-size="11" fill="#c4a882" letter-spacing="4">DESIGN SYSTEM</text>
+            <text x="200" y="300" text-anchor="middle" font-family="serif" font-size="16" fill="#3a3a3a" letter-spacing="2">设计系统</text>
+            <line x1="80" y1="330" x2="320" y2="330" stroke="#c4a882" stroke-width="0.5"/>
+          </svg>
+        </div>
+        <div class="portfolio-info">
+          <div class="portfolio-category">Design System</div>
+          <h3 class="portfolio-title">「时砂」设计系统</h3>
+          <p class="portfolio-desc">面向企业级产品的完整设计体系，包含 300+ 组件与交互规范，建立品牌视觉一致性与研发可扩展性。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="showcase reveal">
+      <div class="showcase-header">
+        <div class="showcase-title-group">
+          <h3>精选案例 · 深度解析</h3>
+          <div class="showcase-meta">CASE STUDY / DETAILED ANALYSIS</div>
+        </div>
+        <div class="showcase-stats">
+          <div class="stat">
+            <span class="stat-number">50+</span>
+            <span class="stat-label">数字产品</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number">98%</span>
+            <span class="stat-label">用户满意度</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number">12</span>
+            <span class="stat-label">设计奖项</span>
+          </div>
+        </div>
+      </div>
+      <div class="showcase-grid">
+        <div class="showcase-card">
+          <div class="showcase-card-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20"><rect x="2" y="2" width="16" height="16" fill="none" stroke="#b8944b" stroke-width="1"/></svg>
+          </div>
+          <h4>用户研究</h4>
+          <p>深度访谈与行为分析，从真实场景出发定义设计问题，确保每个决策都有据可依。</p>
+        </div>
+        <div class="showcase-card">
+          <div class="showcase-card-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7" fill="none" stroke="#b8944b" stroke-width="1"/><circle cx="10" cy="10" r="2" fill="#b8944b" opacity="0.4"/></svg>
+          </div>
+          <h4>交互原型</h4>
+          <p>高保真可交互原型，模拟真实使用流程，在开发前验证核心体验路径。</p>
+        </div>
+        <div class="showcase-card">
+          <div class="showcase-card-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20"><polygon points="10,2 18,6 18,14 10,18 2,14 2,6" fill="none" stroke="#b8944b" stroke-width="1"/></svg>
+          </div>
+          <h4>设计系统</h4>
+          <p>构建可扩展的组件库与设计规范，从色彩、字体到动效，形成统一品牌语言。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Space Design -->
+<section id="space">
+  <div class="section-container">
+    <div class="section-header reveal">
+      <div class="section-number">03</div>
+      <h2 class="section-title">空间设计<br>Spatial Design</h2>
+      <div class="section-subtitle">展览 · 商业空间 · 沉浸体验</div>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="portfolio-grid">
+      <div class="portfolio-item reveal">
+        <div class="portfolio-visual">
+          <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+            <rect x="80" y="120" width="240" height="200" fill="none" stroke="#3a3a3a" stroke-width="2"/>
+            <rect x="80" y="120" width="240" height="2" fill="#3a3a3a"/>
+            <line x1="80" y1="180" x2="320" y2="180" stroke="#c4a882" stroke-width="0.8"/>
+            <line x1="80" y1="240" x2="320" y2="240" stroke="#c4a882" stroke-width="0.8"/>
+            <line x1="80" y1="300" x2="320" y2="300" stroke="#c4a882" stroke-width="0.8"/>
+            <line x1="140" y1="120" x2="140" y2="320" stroke="#c4a882" stroke-width="0.5" stroke-dasharray="4,4"/>
+            <line x1="200" y1="120" x2="200" y2="320" stroke="#c4a882" stroke-width="0.5" stroke-dasharray="4,4"/>
+            <line x1="260" y1="120" x2="260" y2="320" stroke="#c4a882" stroke-width="0.5" stroke-dasharray="4,4"/>
+            <rect x="100" y="140" width="30" height="30" fill="#b8944b" opacity="0.15" stroke="#b8944b" stroke-width="0.5"/>
+            <rect x="185" y="195" width="30" height="30" fill="#5a7d7c" opacity="0.1" stroke="#5a7d7c" stroke-width="0.5"/>
+            <circle cx="260" cy="270" r="12" fill="#c4a882" opacity="0.15" stroke="#c4a882" stroke-width="0.5"/>
+          </svg>
+        </div>
+        <div class="portfolio-info">
+          <div class="portfolio-category">Exhibition</div>
+          <h3 class="portfolio-title">「纸间」沉浸式艺术展</h3>
+          <p class="portfolio-desc">以纸张为媒介的沉浸式展览空间设计，探讨材质、光影与时间的多维对话。</p>
+        </div>
+      </div>
+
+      <div class="portfolio-item reveal">
+        <div class="portfolio-visual">
+          <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+            <rect x="60" y="60" width="280" height="280" fill="none" stroke="#c4a882" stroke-width="1"/>
+            <rect x="60" y="60" width="140" height="140" fill="#faf7f0" stroke="#c4a882" stroke-width="0.5"/>
+            <rect x="200" y="60" width="140" height="140" fill="#f5f0e8" stroke="#c4a882" stroke-width="0.5"/>
+            <rect x="60" y="200" width="140" height="140" fill="#f0ece5" stroke="#c4a882" stroke-width="0.5"/>
+            <rect x="200" y="200" width="140" height="140" fill="#ede7da" stroke="#c4a882" stroke-width="0.5"/>
+            <circle cx="130" cy="130" r="25" fill="none" stroke="#b8944b" stroke-width="1"/>
+            <circle cx="270" cy="130" r="25" fill="none" stroke="#5a7d7c" stroke-width="1"/>
+            <circle cx="130" cy="270" r="25" fill="none" stroke="#c4a882" stroke-width="1"/>
+            <circle cx="270" cy="270" r="25" fill="none" stroke="#b8944b" stroke-width="1"/>
+            <text x="200" y="360" text-anchor="middle" font-family="serif" font-size="10" fill="#c4a882" letter-spacing="3">RETAIL · SPACE</text>
+          </svg>
+        </div>
+        <div class="portfolio-info">
+          <div class="portfolio-category">Retail</div>
+          <h3 class="portfolio-title">「素履」生活美学空间</h3>
+          <p class="portfolio-desc">融合茶道、阅读与生活方式的复合商业空间，用克制与留白营造精神栖居之所。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="gallery-grid">
+      <div class="gallery-item large reveal">
+        <svg class="gallery-svg" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+          <rect x="40" y="40" width="520" height="320" fill="none" stroke="#c4a882" stroke-width="1.5"/>
+          <polygon points="300,60 520,200 300,340 80,200" fill="none" stroke="#b8944b" stroke-width="1" opacity="0.5"/>
+          <circle cx="300" cy="200" r="80" fill="none" stroke="#3a3a3a" stroke-width="0.8" opacity="0.2"/>
+          <line x1="200" y1="200" x2="400" y2="200" stroke="#c4a882" stroke-width="0.5" stroke-dasharray="6,6"/>
+          <line x1="300" y1="100" x2="300" y2="300" stroke="#c4a882" stroke-width="0.5" stroke-dasharray="6,6"/>
+          <text x="300" y="375" text-anchor="middle" font-family="serif" font-size="11" fill="#c4a882" letter-spacing="6">ARCHITECTURAL DRAWING</text>
+        </svg>
+        <div class="gallery-label">建筑手稿 / 展馆概念</div>
+      </div>
+      <div class="gallery-item medium reveal">
+        <svg class="gallery-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+          <rect x="50" y="80" width="300" height="240" fill="none" stroke="#5a7d7c" stroke-width="1"/>
+          <rect x="70" y="100" width="120" height="80" fill="none" stroke="#c4a882" stroke-width="0.8"/>
+          <rect x="210" y="100" width="120" height="80" fill="none" stroke="#c4a882" stroke-width="0.8"/>
+          <rect x="70" y="210" width="260" height="90" fill="none" stroke="#b8944b" stroke-width="0.8"/>
+          <line x1="130" y1="100" x2="130" y2="180" stroke="#c4a882" stroke-width="0.5"/>
+        </svg>
+        <div class="gallery-label">空间规划 / 商业布局</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Graphic Design -->
+<section id="graphic">
+  <div class="section-container">
+    <div class="section-header reveal">
+      <div class="section-number">04</div>
+      <h2 class="section-title">平面设计<br>Graphic Design</h2>
+      <div class="section-subtitle">品牌视觉 · 书籍装帧 · 海报艺术</div>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="portfolio-grid">
+      <div class="portfolio-item reveal">
+        <div class="portfolio-visual">
+          <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+            <rect x="80" y="60" width="240" height="280" fill="none" stroke="#3a3a3a" stroke-width="1.5"/>
+            <rect x="80" y="60" width="240" height="60" fill="#3a3a3a" opacity="0.03"/>
+            <line x1="80" y1="120" x2="320" y2="120" stroke="#c4a882" stroke-width="0.5"/>
+            <rect x="100" y="140" width="200" height="12" fill="#3a3a3a" opacity="0.08"/>
+            <rect x="100" y="165" width="150" height="8" fill="#c4a882" opacity="0.2"/>
+            <rect x="100" y="190" width="200" height="60" fill="none" stroke="#5a7d7c" stroke-width="0.8"/>
+            <rect x="100" y="270" width="200" height="50" fill="none" stroke="#b8944b" stroke-width="0.6"/>
+            <circle cx="140" cy="295" r="10" fill="none" stroke="#c4a882" stroke-width="1"/>
+            <circle cx="200" cy="295" r="10" fill="none" stroke="#c4a882" stroke-width="1"/>
+          </svg>
+        </div>
+        <div class="portfolio-info">
+          <div class="portfolio-category">Branding</div>
+          <h3 class="portfolio-title">「檐下」东方茶品牌视觉</h3>
+          <p class="portfolio-desc">以传统建筑檐角为灵感，构建融合东方哲学与现代极简的品牌视觉体系。</p>
+        </div>
+      </div>
+
+      <div class="portfolio-item reveal">
+        <div class="portfolio-visual">
+          <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+            <rect x="60" y="100" width="280" height="200" fill="none" stroke="#c4a882" stroke-width="1"/>
+            <rect x="60" y="100" width="280" height="30" fill="#b8944b" opacity="0.08"/>
+            <line x1="60" y1="130" x2="340" y2="130" stroke="#c4a882" stroke-width="0.5"/>
+            <rect x="80" y="150" width="240" height="8" fill="#3a3a3a" opacity="0.1"/>
+            <rect x="80" y="170" width="180" height="6" fill="#5a7d7c" opacity="0.15"/>
+            <rect x="80" y="195" width="240" height="80" fill="none" stroke="#c4a882" stroke-width="0.6"/>
+            <line x1="200" y1="195" x2="200" y2="275" stroke="#c4a882" stroke-width="0.3"/>
+            <rect x="100" y="210" width="85" height="20" fill="#c4a882" opacity="0.1"/>
+            <rect x="215" y="210" width="85" height="20" fill="#c4a882" opacity="0.1"/>
+          </svg>
+        </div>
+        <div class="portfolio-info">
+          <div class="portfolio-category">Publication</div>
+          <h3 class="portfolio-title">「墨迹」艺术家手札系列</h3>
+          <p class="portfolio-desc">为独立艺术家打造的限量版手札丛书，探索纸质媒介在数字时代的独特价值。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="gallery-grid">
+      <div class="gallery-item small reveal">
+        <svg class="gallery-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="200" cy="200" r="120" fill="none" stroke="#c4a882" stroke-width="1.5"/>
+          <circle cx="200" cy="200" r="80" fill="none" stroke="#b8944b" stroke-width="0.8" opacity="0.5"/>
+          <circle cx="200" cy="200" r="40" fill="#b8944b" opacity="0.08"/>
+        </svg>
+        <div class="gallery-label">品牌标识 / Logo 设计</div>
+      </div>
+      <div class="gallery-item xsmall reveal">
+        <svg class="gallery-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+          <rect x="100" y="60" width="200" height="280" fill="none" stroke="#3a3a3a" stroke-width="1.2"/>
+          <line x1="100" y1="100" x2="300" y2="100" stroke="#c4a882" stroke-width="0.5"/>
+          <rect x="120" y="120" width="160" height="100" fill="#b8944b" opacity="0.06"/>
+        </svg>
+        <div class="gallery-label">海报设计 / 文化展览</div>
+      </div>
+      <div class="gallery-item small reveal">
+        <svg class="gallery-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+          <rect x="80" y="80" width="240" height="240" fill="none" stroke="#5a7d7c" stroke-width="1"/>
+          <rect x="80" y="80" width="240" height="50" fill="#5a7d7c" opacity="0.06"/>
+          <line x1="80" y1="130" x2="320" y2="130" stroke="#5a7d7c" stroke-width="0.5"/>
+          <rect x="100" y="150" width="200" height="60" fill="none" stroke="#c4a882" stroke-width="0.6"/>
+          <rect x="100" y="230" width="200" height="60" fill="none" stroke="#b8944b" stroke-width="0.6"/>
+        </svg>
+        <div class="gallery-label">书籍装帧 / 文化刊物</div>
+      </div>
+      <div class="gallery-item xsmall reveal">
+        <svg class="gallery-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+          <line x1="60" y1="100" x2="340" y2="100" stroke="#c4a882" stroke-width="1"/>
+          <line x1="60" y1="200" x2="340" y2="200" stroke="#c4a882" stroke-width="0.5"/>
+          <line x1="60" y1="300" x2="340" y2="300" stroke="#c4a882" stroke-width="1"/>
+          <line x1="200" y1="60" x2="200" y2="340" stroke="#b8944b" stroke-width="0.5" opacity="0.4"/>
+          <circle cx="200" cy="200" r="60" fill="none" stroke="#b8944b" stroke-width="1.5"/>
+          <circle cx="200" cy="200" r="30" fill="#b8944b" opacity="0.1"/>
+        </svg>
+        <div class="gallery-label">插画系列 / 纸上艺术</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Resume -->
+<section id="resume">
+  <div class="section-container">
+    <div class="section-header reveal">
+      <div class="section-number">05</div>
+      <h2 class="section-title">个人履历<br>Resume</h2>
+      <div class="section-subtitle">经历 · 成就 · 成长轨迹</div>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="resume-layout">
+      <aside class="resume-sidebar reveal">
+        <h4 style="font-family:var(--font-sans);font-size:0.65rem;letter-spacing:0.15em;color:var(--tan);margin-bottom:20px;">联系方式</h4>
+        <ul class="contact-info">
+          <li>
+            <span class="contact-label">邮箱</span>
+            ziyue.ding@design.studio
+          </li>
+          <li>
+            <span class="contact-label">电话</span>
+            +86 138 0000 0000
+          </li>
+          <li>
+            <span class="contact-label">微信</span>
+            ziyue_design
+          </li>
+          <li>
+            <span class="contact-label">所在地</span>
+            中国 · 杭州
+          </li>
+        </ul>
+
+        <h4 style="font-family:var(--font-sans);font-size:0.65rem;letter-spacing:0.15em;color:var(--tan);margin:32px 0 12px;">语言能力</h4>
+        <p style="font-family:var(--font-cn);font-size:0.82rem;color:var(--ink-soft);line-height:2;">
+          中文 · 母语<br>
+          英语 · 流利 (IELTS 7.5)<br>
+          日语 · 日常交流
+        </p>
+
+        <h4 style="font-family:var(--font-sans);font-size:0.65rem;letter-spacing:0.15em;color:var(--tan);margin:32px 0 12px;">荣誉</h4>
+        <p style="font-family:var(--font-cn);font-size:0.8rem;color:var(--ink-soft);line-height:2;">
+          Red Dot Design Award 2025<br>
+          GDC 设计奖 银奖 2024<br>
+          靳埭强设计奖 2024<br>
+          Hiiibrand Awards 2023
+        </p>
+      </aside>
+
+      <div class="resume-main">
+        <div class="timeline reveal">
+          <div class="timeline-item">
+            <div class="timeline-date">2024.03 — 至今</div>
+            <h3 class="timeline-title">高级交互设计师</h3>
+            <div class="timeline-subtitle">字节跳动 · 杭州</div>
+            <p class="timeline-desc">负责核心产品线的交互设计与用户体验优化。主导设计系统从 0 到 1 的搭建，推动跨团队设计规范落地。完成 3 个重点项目的设计交付，用户体验指标提升 40%。</p>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-date">2022.06 — 2024.02</div>
+            <h3 class="timeline-title">品牌与视觉设计师</h3>
+            <div class="timeline-subtitle">独立设计工作室 · 杭州</div>
+            <p class="timeline-desc">为 20+ 品牌提供视觉设计服务，涵盖品牌形象、包装设计、展览空间等领域。作品入选多项国际设计奖项，建立独特的东方现代主义视觉风格。</p>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-date">2021.09 — 2024.06</div>
+            <h3 class="timeline-title">设计学 硕士</h3>
+            <div class="timeline-subtitle">中国美术学院</div>
+            <p class="timeline-desc">研究方向：数字媒介与空间叙事。毕业论文《纸质媒介在数字时代的重生》获优秀论文奖。期间参与 3 个国家级展览项目的视觉与空间设计。</p>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-date">2017.09 — 2021.06</div>
+            <h3 class="timeline-title">工业设计 学士</h3>
+            <div class="timeline-subtitle">江南大学</div>
+            <p class="timeline-desc">系统学习产品设计、人机交互与视觉传达。毕业设计获校级优秀，参与多项跨学科设计研究项目。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="brand">丁紫悦</div>
+  <div class="tagline">Ziyue Ding · Designer & Storyteller</div>
+  <ul class="social-links">
+    <li><a href="#">Behance</a></li>
+    <li><a href="#">Dribbble</a></li>
+    <li><a href="#">Instagram</a></li>
+    <li><a href="#">小红书</a></li>
+  </ul>
+  <div class="copyright">&copy; 2026 丁紫悦 · 保留所有权利</div>
+</footer>
+
+<script>
+// Navbar scroll effect
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// Mobile menu
+const menuToggle = document.getElementById('menuToggle');
+const mobileMenu = document.getElementById('mobileMenu');
+const mobileClose = document.getElementById('mobileClose');
+const mobileLinks = document.querySelectorAll('.mobile-link');
+
+menuToggle.addEventListener('click', () => mobileMenu.classList.add('active'));
+mobileClose.addEventListener('click', () => mobileMenu.classList.remove('active'));
+mobileLinks.forEach(link => {
+  link.addEventListener('click', () => mobileMenu.classList.remove('active'));
+});
+
+// Cursor decoration
+const cursorDeco = document.getElementById('cursorDeco');
+let mouseX = 0, mouseY = 0;
+let decoX = 0, decoY = 0;
+
+document.addEventListener('mousemove', (e) => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+});
+
+function animateCursor() {
+  decoX += (mouseX - 10 - decoX) * 0.12;
+  decoY += (mouseY - 10 - decoY) * 0.12;
+  cursorDeco.style.transform = `translate(${decoX}px, ${decoY}px)`;
+  requestAnimationFrame(animateCursor);
+}
+animateCursor();
+
+// Hover effect for interactive elements
+const interactiveElements = document.querySelectorAll('a, button, .portfolio-item, .gallery-item, .skill-tag, .showcase-card');
+interactiveElements.forEach(el => {
+  el.addEventListener('mouseenter', () => cursorDeco.style.transform = `translate(${decoX}px, ${decoY}px) scale(1.8)`);
+  el.addEventListener('mouseleave', () => cursorDeco.style.transform = `translate(${decoX}px, ${decoY}px) scale(1)`);
+});
+
+// Scroll reveal
+const revealElements = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+revealElements.forEach(el => observer.observe(el));
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+// Initialize first visible reveal elements
+setTimeout(() => {
+  document.querySelectorAll('.reveal').forEach(el => {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight) {
+      el.classList.add('visible');
+    }
+  });
+}, 100);
+</script>
+</body>
+</html>
