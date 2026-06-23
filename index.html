@@ -1084,6 +1084,41 @@ body.editing .edit-tooltip {
   .edit-btn { width: 38px; height: 38px; }
   .edit-save-btn, .edit-cancel-btn, .edit-export-btn { width: 38px; height: 38px; font-size: 0.55rem; }
 }
+/* ===== LIGHTBOX ===== */
+.lightbox-overlay {
+  position: fixed; inset: 0; z-index: 9999;
+  background: rgba(15,12,8,0.92);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+  cursor: zoom-out;
+}
+.lightbox-overlay.active { opacity: 1; visibility: visible; }
+.lightbox-overlay img {
+  max-width: 92vw; max-height: 90vh;
+  object-fit: contain;
+  border-radius: 4px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+  transition: transform 0.3s ease;
+  cursor: default;
+}
+.lightbox-close {
+  position: absolute; top: 24px; right: 32px;
+  width: 40px; height: 40px;
+  background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 50%; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: #f7f4ed; font-size: 1.4rem; font-family: serif;
+  transition: background 0.3s;
+}
+.lightbox-close:hover { background: rgba(255,255,255,0.25); }
+.lightbox-caption {
+  position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
+  color: #c4a882; font-family: var(--font-cn); font-size: 0.85rem;
+  letter-spacing: 0.05em; opacity: 0.7;
+}
+.portfolio-visual.lightbox-trigger { cursor: zoom-in; }
+.portfolio-visual.lightbox-trigger:hover img { transform: scale(1.03); }
 </style>
 </head>
 <body>
@@ -1108,6 +1143,13 @@ body.editing .edit-tooltip {
 
 <!-- Toast -->
 <div class="edit-toast" id="editToast"></div>
+
+<!-- Lightbox -->
+<div class="lightbox-overlay" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose" aria-label="关闭">&times;</button>
+  <img id="lightboxImg" src="" alt="">
+  <div class="lightbox-caption" id="lightboxCaption"></div>
+</div>
 
 <!-- Navigation -->
 <nav id="navbar">
@@ -1473,7 +1515,7 @@ body.editing .edit-tooltip {
       </div>
 
       <div class="portfolio-item reveal">
-        <div class="portfolio-visual">
+        <div class="portfolio-visual lightbox-trigger" data-lightbox-src="kunlunyao-poster-full.jpg?v=2" data-lightbox-caption="「昆仑谣 KUNLUNYAO」展览海报 · 点击放大查看">
           <img src="kunlunyao-poster-v10-a2.jpg?v=2" alt="KUNLUNYAO 展览海报" width="600" height="848" decoding="async" loading="lazy">
         </div>
         <div class="portfolio-info">
@@ -2202,6 +2244,39 @@ async function publishToGitHub() {
 }
 
 document.getElementById('editPublishBtn').addEventListener('click', publishToGitHub);
+
+// ===== LIGHTBOX =====
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightboxImg');
+const lightboxCaption = document.getElementById('lightboxCaption');
+const lightboxClose = document.getElementById('lightboxClose');
+
+function openLightbox(src, caption) {
+  lightboxImg.src = src;
+  lightboxCaption.textContent = caption || '';
+  lightbox.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  lightbox.classList.remove('active');
+  document.body.style.overflow = '';
+  setTimeout(() => { lightboxImg.src = ''; }, 400);
+}
+
+document.querySelectorAll('.lightbox-trigger').forEach(el => {
+  el.addEventListener('click', () => {
+    openLightbox(el.dataset.lightboxSrc, el.dataset.lightboxCaption);
+  });
+});
+
+lightbox.addEventListener('click', (e) => {
+  if (e.target === lightbox || e.target === lightboxClose) closeLightbox();
+});
+lightboxClose.addEventListener('click', closeLightbox);
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && lightbox.classList.contains('active')) closeLightbox();
+});
 </script>
 </body>
 </html>
