@@ -463,6 +463,18 @@ section {
   height: 80%;
 }
 
+.portfolio-visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: var(--paper-dark);
+  transition: transform 0.6s ease;
+}
+
+.portfolio-item:hover .portfolio-visual img {
+  transform: scale(1.03);
+}
+
 .portfolio-info {
   padding: clamp(16px, 3vw, 32px);
 }
@@ -942,7 +954,9 @@ footer .copyright {
 
 .edit-save-btn,
 .edit-cancel-btn,
-.edit-export-btn {
+.edit-export-btn,
+.edit-reset-btn,
+.edit-publish-btn {
   display: none;
   width: 44px;
   height: 44px;
@@ -963,10 +977,14 @@ footer .copyright {
 .edit-export-btn { background: var(--ink); color: var(--paper); border-color: var(--ink); display: none; }
 .edit-save-btn { background: var(--ink); color: var(--paper); border-color: var(--ink); display: none; }
 .edit-cancel-btn { display: none; }
+.edit-reset-btn { background: var(--accent-red); color: var(--paper); border-color: var(--accent-red); display: none; }
+.edit-publish-btn { background: var(--accent-gold); color: var(--paper); border-color: var(--accent-gold); display: none; }
 
 body.editing .edit-save-btn { display: flex; }
 body.editing .edit-cancel-btn { display: flex; }
 body.editing .edit-export-btn { display: flex; }
+body.editing .edit-reset-btn { display: flex; }
+body.editing .edit-publish-btn { display: flex; }
 
 /* Editable highlight */
 body.editing [data-editable] {
@@ -988,6 +1006,38 @@ body.editing [data-editable]:focus {
   outline: 2px solid var(--accent-gold);
   background: rgba(184,148,75,0.06);
   outline-offset: 3px;
+}
+
+/* Image editing */
+body.editing .img-edit-wrapper {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+body.editing .img-edit-wrapper img {
+  display: block;
+}
+
+body.editing .img-edit-wrapper::after {
+  content: '点击更换图片';
+  position: absolute;
+  inset: 0;
+  background: rgba(26, 26, 26, 0.55);
+  color: var(--paper);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+body.editing .img-edit-wrapper:hover::after {
+  opacity: 1;
 }
 
 /* Hide decorations during edit */
@@ -1050,7 +1100,9 @@ body.editing .edit-tooltip {
     </svg>
   </button>
   <button class="edit-save-btn" id="editSaveBtn" title="保存修改" aria-label="保存">保存</button>
+  <button class="edit-publish-btn" id="editPublishBtn" title="发布到 GitHub Pages" aria-label="发布">发布</button>
   <button class="edit-export-btn" id="editExportBtn" title="下载HTML" aria-label="下载">下载</button>
+  <button class="edit-reset-btn" id="editResetBtn" title="清除保存的修改" aria-label="重置">重置</button>
   <button class="edit-cancel-btn" id="editCancelBtn" title="退出编辑" aria-label="退出">退出</button>
 </div>
 
@@ -1160,11 +1212,25 @@ body.editing .edit-tooltip {
     <div class="section-header reveal">
       <div class="section-number">02</div>
       <h2 class="section-title">交互设计<br>Interaction Design</h2>
-      <div class="section-subtitle">数字产品 · 体验创新 · 设计系统</div>
-      <div class="section-line"></div>
+    <div class="section-subtitle">数字产品 · 体验创新 · 设计系统</div>
+    <div class="section-line"></div>
     </div>
 
     <div class="portfolio-grid">
+      <a href="https://d18270375972.github.io/KUNLUNYAO/scheme1-prototype-gesture.html" target="_blank" rel="noopener" style="display:block;text-decoration:none;color:inherit;">
+        <div class="portfolio-item reveal">
+          <div class="portfolio-visual">
+            <img src="kunlunyao-interactive-poster.png" alt="昆仑谣 · 灵境志 交互叙事原型" loading="lazy">
+          </div>
+          <div class="portfolio-info">
+            <div class="portfolio-category">Interactive Narrative · Gesture</div>
+            <h3 class="portfolio-title">「昆仑谣 KUNLUNYAO」灵境志</h3>
+            <p class="portfolio-desc">手势与点击双驱动的昆仑神话互动叙事体验。以 SVG 交互地图、手势识别与分支对话，构建东方仙境的沉浸探索。</p>
+            <span class="portfolio-cta" style="display:inline-block;margin-top:12px;font-family:var(--font-sans);font-size:0.7rem;letter-spacing:0.1em;color:var(--accent-warm);text-transform:uppercase;border-bottom:1px solid var(--accent-warm);padding-bottom:2px;">查看交互原型 →</span>
+          </div>
+        </div>
+      </a>
+
       <div class="portfolio-item reveal">
         <div class="portfolio-visual">
           <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
@@ -1405,6 +1471,17 @@ body.editing .edit-tooltip {
           <p class="portfolio-desc">为独立艺术家打造的限量版手札丛书，探索纸质媒介在数字时代的独特价值。</p>
         </div>
       </div>
+
+      <div class="portfolio-item reveal">
+        <div class="portfolio-visual">
+          <img src="kunlunyao-poster-v10-a2.png" alt="KUNLUNYAO A2 展览海报" loading="lazy">
+        </div>
+        <div class="portfolio-info">
+          <div class="portfolio-category">Poster / Exhibition</div>
+          <h3 class="portfolio-title">「昆仑谣 KUNLUNYAO」A2 展览海报</h3>
+          <p class="portfolio-desc">以昆仑神话为灵感的交互叙事项目视觉延展，A2 尺寸展览板设计，融合东方仙境意象与现代排版语言。</p>
+        </div>
+      </div>
     </div>
 
     <div class="gallery-grid">
@@ -1624,6 +1701,7 @@ const editToggleBtn = document.getElementById('editToggleBtn');
 const editSaveBtn = document.getElementById('editSaveBtn');
 const editExportBtn = document.getElementById('editExportBtn');
 const editCancelBtn = document.getElementById('editCancelBtn');
+const editResetBtn = document.getElementById('editResetBtn');
 const editToast = document.getElementById('editToast');
 const editTooltip = document.getElementById('editTooltip');
 
@@ -1644,8 +1722,10 @@ const EDITABLE_SELECTORS = [
   'footer .social-links a'
 ];
 
+const EDIT_STORAGE_KEY = 'portfolio_edits_v1';
+
 let isEditing = false;
-let originalHTML = '';
+let editElements = []; // { el, key }
 
 function showToast(msg) {
   editToast.textContent = msg;
@@ -1653,34 +1733,249 @@ function showToast(msg) {
   setTimeout(() => editToast.classList.remove('show'), 2000);
 }
 
+function getEditKey(el) {
+  // Build a stable DOM path key based on tag + classes + sibling index
+  const path = [];
+  let node = el;
+  while (node && node !== document.body && node !== document.documentElement) {
+    const tag = node.tagName.toLowerCase();
+    const id = node.id ? '#' + node.id : '';
+    const classes = Array.from(node.classList).map(c => '.' + c).join('');
+    const name = tag + id + classes;
+    const parent = node.parentElement;
+    let index = 0;
+    if (parent) {
+      const siblings = Array.from(parent.children).filter(c => c.tagName === node.tagName);
+      index = siblings.indexOf(node);
+    }
+    path.unshift(name + '[' + index + ']');
+    node = node.parentElement;
+  }
+  return 'edit_' + path.join('>');
+}
+
+function getEditableElements() {
+  const seen = new Set();
+  const result = [];
+  EDITABLE_SELECTORS.forEach(sel => {
+    document.querySelectorAll(sel).forEach(el => {
+      if (seen.has(el)) return;
+      seen.add(el);
+      result.push({ el, key: getEditKey(el), selector: sel });
+    });
+  });
+  // Also handle elements with inline text (like h1 span)
+  document.querySelectorAll('.hero h1 span').forEach(el => {
+    if (seen.has(el)) return;
+    seen.add(el);
+    result.push({ el, key: getEditKey(el), selector: '.hero h1 span' });
+  });
+  return result;
+}
+
+function saveEdits() {
+  const data = JSON.parse(localStorage.getItem(EDIT_STORAGE_KEY) || '{}');
+  let changed = 0;
+  editElements.forEach(({ el, key }) => {
+    const original = el.getAttribute('data-original') || '';
+    const current = el.innerHTML;
+    if (current !== original) {
+      data[key] = current;
+      changed++;
+    } else {
+      delete data[key];
+    }
+  });
+  localStorage.setItem(EDIT_STORAGE_KEY, JSON.stringify(data));
+  if (changed > 0) {
+    showToast('已自动保存 ' + changed + ' 处修改');
+  }
+}
+
+function onEditInput(e) {
+  const el = e.target;
+  const key = el.getAttribute('data-edit-key');
+  if (!key) return;
+  const data = JSON.parse(localStorage.getItem(EDIT_STORAGE_KEY) || '{}');
+  const original = el.getAttribute('data-original') || '';
+  const current = el.innerHTML;
+  if (current !== original) {
+    data[key] = current;
+  } else {
+    delete data[key];
+  }
+  localStorage.setItem(EDIT_STORAGE_KEY, JSON.stringify(data));
+}
+
+// ===== IMAGE EDITING =====
+
+function indexImages() {
+  document.querySelectorAll('img').forEach((img, index) => {
+    if (img.closest('#editToolbar')) return;
+    if (!img.hasAttribute('data-img-index')) {
+      img.setAttribute('data-img-index', index);
+    }
+  });
+}
+
+function wrapEditableImages() {
+  indexImages();
+  document.querySelectorAll('img[data-img-index]').forEach(img => {
+    if (img.closest('.img-edit-wrapper')) return;
+    const wrapper = document.createElement('div');
+    wrapper.className = 'img-edit-wrapper';
+    img.parentNode.insertBefore(wrapper, img);
+    wrapper.appendChild(img);
+    wrapper.addEventListener('click', onImageWrapperClick);
+  });
+}
+
+function unwrapEditableImages() {
+  document.querySelectorAll('.img-edit-wrapper').forEach(wrapper => {
+    const img = wrapper.querySelector('img');
+    if (img) {
+      wrapper.parentNode.insertBefore(img, wrapper);
+    }
+    wrapper.remove();
+  });
+}
+
+function saveImageEdits() {
+  const data = JSON.parse(localStorage.getItem(EDIT_STORAGE_KEY) || '{}');
+  document.querySelectorAll('img[data-img-index]').forEach(img => {
+    const index = img.getAttribute('data-img-index');
+    const key = `__img_${index}__`;
+    if (!img.getAttribute('data-original-src')) {
+      img.setAttribute('data-original-src', img.src);
+    }
+    const original = img.getAttribute('data-original-src') || img.src;
+    if (img.src !== original) {
+      data[key] = img.src;
+    } else {
+      delete data[key];
+    }
+  });
+  localStorage.setItem(EDIT_STORAGE_KEY, JSON.stringify(data));
+}
+
+function restoreImageEdits() {
+  try {
+    const data = JSON.parse(localStorage.getItem(EDIT_STORAGE_KEY) || '{}');
+    document.querySelectorAll('img[data-img-index]').forEach(img => {
+      const index = img.getAttribute('data-img-index');
+      const key = `__img_${index}__`;
+      if (data[key] !== undefined && data[key] !== img.src) {
+        if (!img.getAttribute('data-original-src')) {
+          img.setAttribute('data-original-src', img.src);
+        }
+        img.src = data[key];
+      }
+    });
+  } catch (err) {
+    console.warn('Restore image edits failed:', err);
+  }
+}
+
+function uploadImageFile(img) {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/*';
+  input.onchange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) {
+      showToast('图片超过 5MB，建议压缩后再上传');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      img.src = event.target.result;
+      saveImageEdits();
+      showToast('图片已更换');
+    };
+    reader.readAsDataURL(file);
+  };
+  input.click();
+}
+
+function onImageWrapperClick(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  const img = e.currentTarget.querySelector('img');
+  if (!img) return;
+  const choice = confirm('点击“确定”上传本地图片，点击“取消”输入图片链接。');
+  if (choice) {
+    uploadImageFile(img);
+  } else {
+    const url = prompt('请输入新的图片链接（留空则取消）：', img.src);
+    if (url && url.trim() !== '' && url.trim() !== img.src) {
+      img.src = url.trim();
+      saveImageEdits();
+      showToast('图片链接已更新');
+    }
+  }
+}
+
+function restoreEdits() {
+  try {
+    const data = JSON.parse(localStorage.getItem(EDIT_STORAGE_KEY) || '{}');
+    if (!data || Object.keys(data).length === 0) return;
+    const elements = getEditableElements();
+    let restored = 0;
+    elements.forEach(({ el, key }) => {
+      if (!el.getAttribute('data-original')) {
+        el.setAttribute('data-original', el.innerHTML);
+      }
+      if (data[key] !== undefined && data[key] !== el.innerHTML) {
+        el.innerHTML = data[key];
+        restored++;
+      }
+    });
+    if (restored > 0) {
+      showToast('已恢复 ' + restored + ' 处保存的修改');
+    }
+  } catch (err) {
+    console.warn('Restore edits failed:', err);
+  }
+}
+
 function enterEditMode() {
   if (isEditing) return;
   isEditing = true;
-  originalHTML = document.documentElement.outerHTML;
   document.body.classList.add('editing');
 
+  editElements = getEditableElements();
   let count = 0;
-  EDITABLE_SELECTORS.forEach(sel => {
-    document.querySelectorAll(sel).forEach(el => {
-      if (!el.hasAttribute('contenteditable')) {
-        el.setAttribute('contenteditable', 'true');
-        el.setAttribute('data-editable', '');
-        count++;
-      }
-    });
-  });
-
-  // Also handle elements with inline text (like h1 span)
-  document.querySelectorAll('.hero h1 span').forEach(el => {
+  editElements.forEach(({ el, key }) => {
+    if (!el.getAttribute('data-original')) {
+      el.setAttribute('data-original', el.innerHTML);
+    }
     if (!el.hasAttribute('contenteditable')) {
       el.setAttribute('contenteditable', 'true');
       el.setAttribute('data-editable', '');
+      el.setAttribute('data-edit-key', key);
+      el.addEventListener('input', onEditInput);
       count++;
     }
   });
 
+  wrapEditableImages();
   editTooltip.style.display = 'none';
-  showToast('编辑模式已开启 · 点击任意文字即可修改 · ' + count + ' 处可编辑');
+  showToast('编辑模式已开启 · 点击任意文字或图片即可修改 · ' + count + ' 处可编辑');
+}
+
+function enterEditModeSilent() {
+  editElements = getEditableElements();
+  editElements.forEach(({ el, key }) => {
+    if (!el.getAttribute('data-original')) {
+      el.setAttribute('data-original', el.innerHTML);
+    }
+    el.setAttribute('contenteditable', 'true');
+    el.setAttribute('data-editable', '');
+    el.setAttribute('data-edit-key', key);
+    el.addEventListener('input', onEditInput);
+  });
+  wrapEditableImages();
 }
 
 function exitEditMode(save) {
@@ -1691,27 +1986,31 @@ function exitEditMode(save) {
   document.querySelectorAll('[contenteditable="true"]').forEach(el => {
     el.removeAttribute('contenteditable');
     el.removeAttribute('data-editable');
-    // Keep changed content
+    el.removeAttribute('data-edit-key');
+    el.removeEventListener('input', onEditInput);
   });
 
+  unwrapEditableImages();
+  editElements = [];
   editTooltip.style.display = 'block';
   if (save) {
-    showToast('修改已保存（页面状态）· 点击"下载"导出HTML');
+    showToast('修改已保存 · 刷新页面后仍然保留');
   } else {
     showToast('已退出编辑模式');
   }
 }
 
 function downloadHTML() {
-  // Remove edit mode artifacts before download
   const wasEditing = isEditing;
   if (isEditing) {
-    document.body.classList.remove('editing');
+    exitEditMode(true);
   }
 
-  // Remove contenteditable attributes
+  // Remove edit mode artifacts before download
   document.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
   document.querySelectorAll('[data-editable]').forEach(el => el.removeAttribute('data-editable'));
+  document.querySelectorAll('[data-edit-key]').forEach(el => el.removeAttribute('data-edit-key'));
+  document.querySelectorAll('[data-original]').forEach(el => el.removeAttribute('data-original'));
   document.querySelector('#editToolbar').style.display = 'none';
   document.querySelector('#editToast').style.display = 'none';
 
@@ -1721,6 +2020,7 @@ function downloadHTML() {
   document.querySelector('#editToolbar').style.display = '';
   document.querySelector('#editToast').style.display = '';
   if (wasEditing) {
+    isEditing = true;
     document.body.classList.add('editing');
     enterEditModeSilent();
   }
@@ -1737,23 +2037,23 @@ function downloadHTML() {
   showToast('HTML 文件已下载 ✓');
 }
 
-function enterEditModeSilent() {
-  EDITABLE_SELECTORS.forEach(sel => {
-    document.querySelectorAll(sel).forEach(el => {
-      el.setAttribute('contenteditable', 'true');
-      el.setAttribute('data-editable', '');
-    });
-  });
-  document.querySelectorAll('.hero h1 span').forEach(el => {
-    el.setAttribute('contenteditable', 'true');
-    el.setAttribute('data-editable', '');
-  });
+function resetEdits() {
+  if (!confirm('确定要清除所有保存的修改并恢复原始内容吗？')) return;
+  localStorage.removeItem(EDIT_STORAGE_KEY);
+  showToast('已清除保存的修改 · 正在刷新页面');
+  setTimeout(() => location.reload(), 800);
 }
+
+// Restore saved edits on page load
+indexImages();
+restoreEdits();
+restoreImageEdits();
 
 editToggleBtn.addEventListener('click', enterEditMode);
 editCancelBtn.addEventListener('click', () => exitEditMode(false));
 editSaveBtn.addEventListener('click', () => exitEditMode(true));
 editExportBtn.addEventListener('click', downloadHTML);
+editResetBtn.addEventListener('click', resetEdits);
 
 // Keyboard shortcut: Ctrl+E to toggle edit
 document.addEventListener('keydown', (e) => {
@@ -1790,6 +2090,118 @@ document.addEventListener('mouseout', (e) => {
 
 // Show tooltip animation
 setTimeout(() => { editTooltip.style.display = 'block'; }, 2000);
+
+// ===== PUBLISH TO GITHUB PAGES =====
+// WARNING: To publish from this editor, set a GitHub token here temporarily
+// and remove it after use. Do NOT leave real tokens in public source files.
+const GITHUB_CONFIG = {
+  owner: 'd18270375972',
+  repo: 'portfolio',
+  path: 'index.html',
+  branch: 'main',
+  token: ''
+};
+
+function getPublishHTML() {
+  const wasEditing = isEditing;
+  const toolbar = document.querySelector('#editToolbar');
+  const toast = document.querySelector('#editToast');
+
+  toolbar.style.display = 'none';
+  toast.style.display = 'none';
+
+  document.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
+  document.querySelectorAll('[data-editable]').forEach(el => el.removeAttribute('data-editable'));
+  document.querySelectorAll('[data-edit-key]').forEach(el => el.removeAttribute('data-edit-key'));
+  document.querySelectorAll('[data-original]').forEach(el => el.removeAttribute('data-original'));
+
+  // Remove image edit wrappers before publishing
+  unwrapEditableImages();
+
+  const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+
+  toolbar.style.display = '';
+  toast.style.display = '';
+
+  if (wasEditing) {
+    isEditing = true;
+    document.body.classList.add('editing');
+    enterEditModeSilent();
+  }
+
+  return html;
+}
+
+async function publishToGitHub() {
+  if (!isEditing) {
+    showToast('请先进入编辑模式');
+    return;
+  }
+
+  const btn = document.getElementById('editPublishBtn');
+  const originalText = btn.textContent;
+  btn.textContent = '...';
+  btn.disabled = true;
+
+  try {
+    const html = getPublishHTML();
+    exitEditMode(true);
+
+    const getUrl = `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${GITHUB_CONFIG.path}?ref=${GITHUB_CONFIG.branch}`;
+    const getResp = await fetch(getUrl, {
+      headers: {
+        'Authorization': `token ${GITHUB_CONFIG.token}`,
+        'Accept': 'application/vnd.github.v3+json'
+      }
+    });
+
+    if (!getResp.ok) {
+      const err = await getResp.json();
+      throw new Error('获取文件信息失败: ' + (err.message || getResp.statusText));
+    }
+
+    const fileInfo = await getResp.json();
+    const sha = fileInfo.sha;
+
+    const content = btoa(unescape(encodeURIComponent(html)));
+    const putUrl = `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${GITHUB_CONFIG.path}`;
+    const putResp = await fetch(putUrl, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `token ${GITHUB_CONFIG.token}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        message: 'Update portfolio from online editor',
+        content: content,
+        sha: sha,
+        branch: GITHUB_CONFIG.branch
+      })
+    });
+
+    if (!putResp.ok) {
+      const err = await putResp.json();
+      throw new Error('发布失败: ' + (err.message || putResp.statusText));
+    }
+
+    localStorage.removeItem(EDIT_STORAGE_KEY);
+    showToast('发布成功！约 1 分钟后生效');
+
+    setTimeout(() => {
+      alert('已发布到 GitHub Pages\n新内容大约需要 1 分钟才能生效，请稍后再刷新。');
+    }, 600);
+
+  } catch (err) {
+    console.error('Publish error:', err);
+    showToast('发布失败: ' + err.message);
+  } finally {
+    btn.textContent = originalText;
+    btn.disabled = false;
+  }
+}
+
+document.getElementById('editPublishBtn').addEventListener('click', publishToGitHub);
 </script>
 </body>
 </html>
